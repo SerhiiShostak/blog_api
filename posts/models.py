@@ -10,22 +10,22 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    likes = models.ManyToManyField(User, through='Like', related_name='likes')
+    likes = models.ManyToManyField(User, through='Like', related_name='liked_post')
 
     def __str__(self):
         return f"{self.id}: {self.title[:20]}"
 
 
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_likes')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_likes')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        conttraits = [
+        constraints = [
             models.UniqueConstraint(fields=['user', 'post'], name='unique_like')
         ]
         ordering = ['-created_at']
     
     def __str__(self):
-        return f'{self.user.username} likes {self.post.title}'
+        return f'{self.user_id} likes {self.post_id}'
