@@ -40,7 +40,9 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'django_filters',
-    'drf_yasg',
+    # 'drf_yasg',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     'posts',
 ]
 
@@ -129,6 +131,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
         'posts.permissions.IsAuthorOrReadOnly',
@@ -152,6 +156,22 @@ REST_FRAMEWORK = {
         "anon": "100/day",
         "user": "1000/day",
     },
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Blog API',
+    'DESCRIPTION': 'Test description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+
+    'SWAGGER_UI_SETTINGS': {
+        'persistAuthorization': True,
+    },
+    "COMPONENT_SPLIT_REQUEST": True,
 }
 
 SIMPLE_JWT = {
